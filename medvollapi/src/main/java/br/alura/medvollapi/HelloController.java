@@ -1,4 +1,4 @@
-package br.alura.medvollapi.controller;
+package br.alura.medvollapi;
 
 
 import org.springframework.web.bind.annotation.GetMapping;
