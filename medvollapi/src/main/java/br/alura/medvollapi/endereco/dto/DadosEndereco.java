@@ -1,6 +1,8 @@
 package br.alura.medvollapi.endereco.dto;
 
 
+import br.alura.medvollapi.endereco.entity.Endereco;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
@@ -18,4 +20,10 @@ public record DadosEndereco(
         @NotBlank
         String uf,
         String complemento,
-        String numero) {}
+        String numero) {
+
+        public DadosEndereco(Endereco endereco) {
+                this(endereco.getLogradouro(), endereco.getBairro(), endereco.getCep(), endereco.getCidade(),
+                        endereco.getUf(), endereco.getComplemento(), endereco.getNumero());
+        }
+}
