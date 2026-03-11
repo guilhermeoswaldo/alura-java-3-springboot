@@ -1,7 +1,7 @@
 package br.alura.medvollapi.medico.dto;
 
 
-import br.alura.medvollapi.endereco.dto.DadosCadastroEndereco;
+import br.alura.medvollapi.endereco.dto.DadosEndereco;
 import br.alura.medvollapi.medico.EspecialidadeMedicoEnum;
 
 import jakarta.validation.Valid;
@@ -27,4 +27,4 @@ public record DadosCadastroMedico(
         EspecialidadeMedicoEnum especialidade,
         @NotNull
         @Valid
-        DadosCadastroEndereco endereco) {}
+        DadosEndereco endereco) {}

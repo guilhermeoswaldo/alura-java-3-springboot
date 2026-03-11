@@ -1,7 +1,7 @@
 package br.alura.medvollapi.paciente.dto;
 
 
-import br.alura.medvollapi.endereco.dto.DadosCadastroEndereco;
+import br.alura.medvollapi.endereco.dto.DadosEndereco;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -24,4 +24,4 @@ public record DadosCadastroPaciente(
         String cpf,
         @NotNull
         @Valid
-        DadosCadastroEndereco endereco) {}
+        DadosEndereco endereco) {}
