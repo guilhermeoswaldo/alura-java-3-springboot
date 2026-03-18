@@ -1,4 +1,4 @@
-package br.alura.medvollapi.infra;
+package br.alura.medvollapi.infra.exception;
 
 
 import java.util.List;

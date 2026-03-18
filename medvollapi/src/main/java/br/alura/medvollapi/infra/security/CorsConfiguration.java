@@ -1,4 +1,4 @@
-package br.alura.medvollapi.infra;
+package br.alura.medvollapi.infra.security;
 
 
 import org.springframework.context.annotation.Configuration;
