@@ -1,4 +1,4 @@
-package br.alura.medvollapi.domain.usuario.service;
+package br.alura.medvollapi.infra.security;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,7 @@ public class AutenticacaoService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return usuarioRepository.findByLogin(username);
+        return usuarioRepository.findByLogin(username).map(UsuarioPrincipal::new)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado com o login: " + username));
     }
 }

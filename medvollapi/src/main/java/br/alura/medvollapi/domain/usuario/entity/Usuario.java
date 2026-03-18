@@ -1,14 +1,6 @@
 package br.alura.medvollapi.domain.usuario.entity;
 
 
-import java.util.Collection;
-import java.util.List;
-
-import org.jspecify.annotations.Nullable;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,26 +19,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 // A entidade não deveria implementar diretamente o UserDetails, deveria ter uma Wrapper intermediário para separar as responsabilidades e para que fosse protegido informações confidenciais do usuário ja que esse UserDetails fica trafegando no contexto de segunrança do Spring.
-public class Usuario implements UserDetails {
+public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String login;
     private String senha;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
-    }
-
-    @Override
-    public @Nullable String getPassword() {
-        return this.senha;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.login;
-    }
 }

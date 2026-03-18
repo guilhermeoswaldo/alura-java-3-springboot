@@ -6,20 +6,21 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import jakarta.persistence.EntityNotFoundException;
 
 
 @RestControllerAdvice
-public class ExceptionHandler {
+public class GerenciadoDeErros {
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(EntityNotFoundException.class)
+    @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Void> tratarErroNotFound() {
         return ResponseEntity.notFound().build();
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<DadosErroValidacao>> tratarErroValidacao(MethodArgumentNotValidException e) {
         var erros = e.getFieldErrors();
         return ResponseEntity.badRequest().body(erros.stream().map(DadosErroValidacao::new).toList());
