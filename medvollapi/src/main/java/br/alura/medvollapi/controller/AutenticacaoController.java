@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.alura.medvollapi.domain.usuario.dto.DadosAutenticacao;
+import br.alura.medvollapi.infra.security.DadosTokenJWT;
+import br.alura.medvollapi.infra.security.TokenService;
+import br.alura.medvollapi.infra.security.UsuarioPrincipal;
 
 import jakarta.validation.Valid;
 
@@ -22,10 +25,16 @@ public class AutenticacaoController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping
-    public ResponseEntity<Void> efetuarLogin(@RequestBody @Valid DadosAutenticacao dados) {
-        var token = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
-        var auth = authenticationManager.authenticate(token);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<DadosTokenJWT> efetuarLogin(@RequestBody @Valid DadosAutenticacao dados) {
+        var authToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
+        var auth = authenticationManager.authenticate(authToken);
+
+        var jwtToken = tokenService.gerarToken((UsuarioPrincipal) auth.getPrincipal());
+
+        return ResponseEntity.ok(new DadosTokenJWT(jwtToken));
     }
 }

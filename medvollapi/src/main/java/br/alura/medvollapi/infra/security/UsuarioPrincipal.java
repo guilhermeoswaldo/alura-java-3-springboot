@@ -21,11 +21,15 @@ public record UsuarioPrincipal(Usuario usuario) implements UserDetails {
 
     @Override
     public @Nullable String getPassword() {
-        return usuario.getSenha();
+        return this.usuario.getSenha();
     }
 
     @Override
     public String getUsername() {
-        return usuario.getLogin();
+        return this.usuario.getLogin();
+    }
+
+    public Long getIdUsuario() {
+        return this.usuario.getId();
     }
 }
