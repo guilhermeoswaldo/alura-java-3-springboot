@@ -40,7 +40,7 @@ public class SecurityConfiguration {
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> {
                     authorizeRequests.requestMatchers(HttpMethod.POST, "/login").permitAll();
-                    authorizeRequests.requestMatchers(HttpMethod.DELETE, "/medicos").hasRole("ADMIN");
+                    authorizeRequests.requestMatchers(HttpMethod.DELETE, "/medicos").hasRole("ADMIN"); // TODO: Permitir o acesso de determinados endpoints apenas para determinadas roles
                     authorizeRequests.requestMatchers(HttpMethod.DELETE, "/pacientes").hasRole("ADMIN");
                     authorizeRequests.anyRequest().authenticated();
                 }).addFilterBefore(this.tokenFilter, UsernamePasswordAuthenticationFilter.class) // Ordem de configuracão dos filtros afeta o funcionamento pois a verificacao do token deve vir antes da autenticacao do Spring

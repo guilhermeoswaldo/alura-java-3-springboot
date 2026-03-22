@@ -53,7 +53,7 @@ public class MedicoController {
     }
 
     @GetMapping("/{id}")
-    @Secured("ROLE_ADMIN") // Permite acesso apenas quem tiver a role ADMIN
+    @Secured("ROLE_ADMIN") // Permite acesso apenas quem tiver a role ADMIN // TODO: Configurar e testar o acesso do endpoint apenas para alguns usuários
     public ResponseEntity<DadosDetalhamentoMedico> recuperar(@PathVariable Long id) {
         var medico = this.medicoRepository.getReferenceById(id);
         return ResponseEntity.ok(new DadosDetalhamentoMedico(medico));

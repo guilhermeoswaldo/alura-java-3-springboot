@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import br.alura.medvollapi.domain.usuario.entity.Usuario;
 
-
+// TODO: Configurar informaçoes de roles dos usuários
 public record SecurityUsuario(Usuario usuario) implements UserDetails {
 
     @Override
