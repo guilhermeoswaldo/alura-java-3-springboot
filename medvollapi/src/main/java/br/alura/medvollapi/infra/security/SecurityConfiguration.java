@@ -3,6 +3,8 @@ package br.alura.medvollapi.infra.security;
 
 import java.util.List;
 
+import br.alura.medvollapi.infra.security.filter.TokenFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,6 +17,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -23,6 +26,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+
+    @Autowired
+    private TokenFilter tokenFilter;
 
     @Bean
     // Configuração da corrente de segurança ativando ou inativando determinados componentes (Passos da "Alfândega")
@@ -33,7 +39,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorizeRequests -> {
                     authorizeRequests.requestMatchers(HttpMethod.POST, "/login").permitAll();
                     authorizeRequests.anyRequest().authenticated();
-                }).build();
+                }).addFilterBefore(this.tokenFilter, UsernamePasswordAuthenticationFilter.class) // Ordem de configuracão dos filtros afeta o funcionamento pois a verificacao do token deve vir antes da autenticacao do Spring
+                .build();
     }
 
     @Bean
