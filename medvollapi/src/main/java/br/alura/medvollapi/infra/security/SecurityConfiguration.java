@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,7 +30,10 @@ public class SecurityConfiguration {
         return http.cors(cors -> cors.configurationSource(this.corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .build();
+                .authorizeHttpRequests(authorizeRequests -> {
+                    authorizeRequests.requestMatchers(HttpMethod.POST, "/login").permitAll();
+                    authorizeRequests.anyRequest().authenticated();
+                }).build();
     }
 
     @Bean

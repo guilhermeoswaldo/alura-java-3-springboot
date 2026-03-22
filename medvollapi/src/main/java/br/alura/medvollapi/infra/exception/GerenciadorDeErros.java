@@ -13,7 +13,7 @@ import jakarta.persistence.EntityNotFoundException;
 
 
 @RestControllerAdvice
-public class GerenciadoDeErros {
+public class GerenciadorDeErros {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Void> tratarErroNotFound() {

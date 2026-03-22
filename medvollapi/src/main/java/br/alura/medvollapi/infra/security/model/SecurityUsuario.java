@@ -1,4 +1,4 @@
-package br.alura.medvollapi.infra.security;
+package br.alura.medvollapi.infra.security.model;
 
 
 import java.util.Collection;
@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import br.alura.medvollapi.domain.usuario.entity.Usuario;
 
 
-public record UsuarioPrincipal(Usuario usuario) implements UserDetails {
+public record SecurityUsuario(Usuario usuario) implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
