@@ -44,7 +44,7 @@ public class TokenFilter extends OncePerRequestFilter {
     private String recuperarToken(HttpServletRequest request) {
         var authHeader = request.getHeader("Authorization");
         if (authHeader != null) {
-            return authHeader.replace("Bearer ", "");
+            return authHeader.replace("Bearer ", "").trim();
         }
         return null;
     }

@@ -21,13 +21,15 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 @Service
 public class TokenService {
 
+    private static final String ISSUER = "API Voll.med";
+
     @Value("${api.security.token.secret}")
     private String secret;
 
     public String gerarToken(SecurityUsuario usuario) {
         try {
             var algoritmo = Algorithm.HMAC256(secret);
-            return JWT.create().withIssuer("API Voll.med") // Gerador do token - Identificação da aplicação
+            return JWT.create().withIssuer(ISSUER) // Gerador do token - Identificação da aplicação
                     .withSubject(usuario.getUsername())
                     .withClaim("id", usuario.getIdUsuario()) // Permite guardar qualquer tipo de informação - Chave -> Valor
                     .withExpiresAt(dataExpiracao()) // Expiração da chave para segurança
@@ -41,7 +43,7 @@ public class TokenService {
         try {
             Algorithm algoritmo = Algorithm.HMAC256(secret);
             JWTVerifier verifier = JWT.require(algoritmo)
-                    .withIssuer("API Voll.med")
+                    .withIssuer(ISSUER)
                     .build();
 
             return verifier.verify(tokenJWT);
