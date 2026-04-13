@@ -35,7 +35,7 @@ public class ConsultaService {
         var medico = this.escolherMedico(dados);
         var paciente = this.pacienteRepository.getReferenceById(
                 dados.idPaciente()); // Usado para atribuir sem realizar alterações no objeto
-        var consulta = new Consulta(null, medico, paciente, dados.data());
+        var consulta = new Consulta(medico, paciente, dados.data());
         this.consultaRepository.save(consulta);
     }
 
@@ -43,7 +43,7 @@ public class ConsultaService {
         this.validarDadosCancelamento(dados);
         var consulta = this.consultaRepository.getReferenceById(dados.idConsulta());
         this.validarCancelamento(consulta);
-        this.consultaRepository.delete(consulta);
+        consulta.cancelar(dados.motivo());
     }
 
     private void validarDadosConsulta(DadosAgendamentoConsulta dados) throws ValidacaoException {
@@ -74,7 +74,7 @@ public class ConsultaService {
     }
 
     private void validarCancelamento(Consulta consulta) throws ValidacaoException {
-        if (consulta.getData().isAfter(LocalDateTime.now().minusHours(24L))) {
+        if (LocalDateTime.now().isAfter(consulta.getData().minusHours(24L))) {
             throw new ValidacaoException("Uma consulta só pode ser cancelada com antecedência mínima de 24 horas");
         }
     }

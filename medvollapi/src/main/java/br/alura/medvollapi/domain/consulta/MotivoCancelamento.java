@@ -1,6 +1,6 @@
 package br.alura.medvollapi.domain.consulta;
 
 
-public enum MotivoCancelamentoEnum {
+public enum MotivoCancelamento {
     PACIENTE_DESISTIU, MEDICO_CANCELOU, OUTROS
 }
