@@ -2,7 +2,7 @@ package br.alura.medvollapi.domain.medico.entity;
 
 
 import br.alura.medvollapi.domain.endereco.entity.Endereco;
-import br.alura.medvollapi.domain.medico.EspecialidadeMedicoEnum;
+import br.alura.medvollapi.domain.medico.EspecialidadeMedico;
 import br.alura.medvollapi.domain.medico.dto.DadosAtualizacaoMedico;
 import br.alura.medvollapi.domain.medico.dto.DadosCadastroMedico;
 
@@ -37,7 +37,7 @@ public class Medico {
     private String telefone;
     private String crm;
     @Enumerated(EnumType.STRING)
-    private EspecialidadeMedicoEnum especialidade;
+    private EspecialidadeMedico especialidade;
     @Embedded
     private Endereco endereco;
 

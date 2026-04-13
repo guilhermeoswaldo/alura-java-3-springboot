@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import br.alura.medvollapi.domain.medico.EspecialidadeMedicoEnum;
+import br.alura.medvollapi.domain.medico.EspecialidadeMedico;
 import br.alura.medvollapi.domain.medico.entity.Medico;
 
 import jakarta.validation.constraints.Future;
@@ -34,7 +34,7 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
             ORDER BY rand()
             LIMIT 1
             """)
-    Medico buscarMedicoAleatorioDisponivelNaData(EspecialidadeMedicoEnum especialidade,
+    Medico buscarMedicoAleatorioDisponivelNaData(EspecialidadeMedico especialidade,
             @NotNull @Future LocalDateTime data);
 
 }
