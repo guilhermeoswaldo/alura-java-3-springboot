@@ -1,6 +1,6 @@
 package br.alura.medvollapi.domain.medico;
 
 
-public enum EspecialidadeMedicoEnum {
+public enum EspecialidadeMedico {
     ORTOPEDIA, CARDIOLOGIA, GINECOLOGIA, DERMATOLOGIA
 }

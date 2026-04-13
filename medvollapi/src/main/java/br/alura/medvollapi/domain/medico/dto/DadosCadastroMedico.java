@@ -2,7 +2,7 @@ package br.alura.medvollapi.domain.medico.dto;
 
 
 import br.alura.medvollapi.domain.endereco.dto.DadosEndereco;
-import br.alura.medvollapi.domain.medico.EspecialidadeMedicoEnum;
+import br.alura.medvollapi.domain.medico.EspecialidadeMedico;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -24,7 +24,7 @@ public record DadosCadastroMedico(
         @Pattern(regexp = "\\d{4,6}")
         String crm,
         @NotNull(message = "{especialidade.obrigatoria}")
-        EspecialidadeMedicoEnum especialidade,
+        EspecialidadeMedico especialidade,
         @NotNull(message = "{endereco.obrigatorio}")
         @Valid
         DadosEndereco endereco) {}
