@@ -11,4 +11,6 @@ import br.alura.medvollapi.domain.paciente.entity.Paciente;
 public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 
     Page<Paciente> findAllByAtivo(Pageable paginacao, Boolean ativo);
+
+    Boolean findAtivoById(Long id);
 }

@@ -31,7 +31,10 @@ public class ConsultaService {
     private PacienteRepository pacienteRepository;
 
     public void agendar(DadosAgendamentoConsulta dados) throws ValidacaoException {
+        // Validação de integridade de dados
         this.validarDadosConsulta(dados);
+        // Validações de Regra de Negócio
+        
         var medico = this.escolherMedico(dados);
         var paciente = this.pacienteRepository.getReferenceById(
                 dados.idPaciente()); // Usado para atribuir sem realizar alterações no objeto
