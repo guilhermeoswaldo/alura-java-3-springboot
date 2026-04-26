@@ -1,11 +1,10 @@
 package br.alura.medvollapi.domain.usuario.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.util.List;
+
+import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-// A entidade não deveria implementar diretamente o UserDetails, deveria ter uma Wrapper intermediário para separar as responsabilidades e para que fosse protegido informações confidenciais do usuário ja que esse UserDetails fica trafegando no contexto de segunrança do Spring.
+// A entidade não deve implementar diretamente o UserDetails, ele deve ter uma Wrapper intermediário para separar as responsabilidades e para que fosse protegido informações confidenciais do usuário ja que esse UserDetails fica trafegando no contexto de segurança do Spring.
 public class Usuario {
 
     @Id
@@ -26,4 +25,10 @@ public class Usuario {
     private Long id;
     private String login;
     private String senha;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "usuario_perfis", joinColumns = @JoinColumn(name = "usuario_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "perfil_permissao")
+    private List<PerfilPermissao> perfilPermissoes;
+
 }
