@@ -5,9 +5,10 @@ import java.time.DayOfWeek;
 
 import br.alura.medvollapi.domain.consulta.dto.DadosAgendamentoConsulta;
 import br.alura.medvollapi.infra.exception.ValidacaoException;
+import org.springframework.stereotype.Component;
 
-
-public class ValidadorHorarioFuncionamentoClinica {
+@Component
+public class ValidadorHorarioFuncionamentoClinica implements ValidadorAgendamentoConsulta {
 
     public void validar(DadosAgendamentoConsulta dados) throws ValidacaoException {
         var dataConsulta = dados.data();

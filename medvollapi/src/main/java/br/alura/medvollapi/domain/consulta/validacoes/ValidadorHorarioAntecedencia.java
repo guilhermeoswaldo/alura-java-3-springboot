@@ -6,11 +6,12 @@ import java.time.LocalDateTime;
 
 import br.alura.medvollapi.domain.consulta.dto.DadosAgendamentoConsulta;
 import br.alura.medvollapi.infra.exception.ValidacaoException;
+import org.springframework.stereotype.Component;
 
+@Component
+public class ValidadorHorarioAntecedencia implements ValidadorAgendamentoConsulta {
 
-public class ValidadorHorarioAntecedencia {
-
-    public void validar(DadosAgendamentoConsulta dados) throws ValidacaoException {
+    public void validar(DadosAgendamentoConsulta dados) {
         var dataConsulta = dados.data();
         var agora = LocalDateTime.now();
         var diferencaEmMinutos = Duration.between(agora, dataConsulta).toMinutes();

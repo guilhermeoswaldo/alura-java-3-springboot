@@ -5,10 +5,13 @@ import br.alura.medvollapi.domain.consulta.dto.DadosAgendamentoConsulta;
 import br.alura.medvollapi.domain.consulta.repository.ConsultaRepository;
 
 import jakarta.validation.ValidationException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
+public class ValidadorMedicoComOutraConsultaMesmoHorario implements ValidadorAgendamentoConsulta {
 
-public class ValidadorMedicoComOutraConsultaMesmoHorario {
-
+    @Autowired
     private ConsultaRepository consultaRepository;
 
     public void validar(DadosAgendamentoConsulta dados) {
