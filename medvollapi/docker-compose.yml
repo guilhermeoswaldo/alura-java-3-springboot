@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  # Container do Banco de Dados
+  db:
+    image: mysql:8.0
+    container_name: mysql-vollmed
+    environment:
+      MYSQL_DATABASE: vollmed
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306" # Se a porta 3306 estiver ocupada no seu PC, mude para "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
