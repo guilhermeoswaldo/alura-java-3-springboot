@@ -1,11 +1,13 @@
-package br.alura.medvollapi.domain.consulta.validacoes;
+package br.alura.medvollapi.domain.consulta.validacoes.agendamento;
 
 
 import java.time.DayOfWeek;
 
+import org.springframework.stereotype.Component;
+
 import br.alura.medvollapi.domain.consulta.dto.DadosAgendamentoConsulta;
 import br.alura.medvollapi.infra.exception.ValidacaoException;
-import org.springframework.stereotype.Component;
+
 
 @Component
 public class ValidadorHorarioFuncionamentoClinica implements ValidadorAgendamentoConsulta {

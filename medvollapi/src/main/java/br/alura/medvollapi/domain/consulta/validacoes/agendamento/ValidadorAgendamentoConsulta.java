@@ -1,6 +1,8 @@
-package br.alura.medvollapi.domain.consulta.validacoes;
+package br.alura.medvollapi.domain.consulta.validacoes.agendamento;
+
 
 import br.alura.medvollapi.domain.consulta.dto.DadosAgendamentoConsulta;
+
 
 public interface ValidadorAgendamentoConsulta {
 

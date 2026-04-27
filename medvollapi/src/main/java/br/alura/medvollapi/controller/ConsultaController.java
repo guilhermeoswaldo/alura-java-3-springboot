@@ -12,7 +12,6 @@ import br.alura.medvollapi.domain.consulta.dto.DadosAgendamentoConsulta;
 import br.alura.medvollapi.domain.consulta.dto.DadosCancelamentoConsulta;
 import br.alura.medvollapi.domain.consulta.dto.DadosDetalhamentoConsulta;
 import br.alura.medvollapi.domain.consulta.service.ConsultaService;
-import br.alura.medvollapi.infra.exception.ValidacaoException;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -27,16 +26,14 @@ public class ConsultaController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<DadosDetalhamentoConsulta> agendar(@RequestBody @Valid DadosAgendamentoConsulta dados)
-            throws ValidacaoException {
+    public ResponseEntity<DadosDetalhamentoConsulta> agendar(@RequestBody @Valid DadosAgendamentoConsulta dados) {
         var dto = this.consultaService.agendar(dados);
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping("/cancelar")
     @Transactional
-    public ResponseEntity<Void> cancelar(@RequestBody @Valid DadosCancelamentoConsulta dados)
-            throws ValidacaoException {
+    public ResponseEntity<Void> cancelar(@RequestBody @Valid DadosCancelamentoConsulta dados) {
         this.consultaService.cancelar(dados);
         return ResponseEntity.noContent().build();
     }

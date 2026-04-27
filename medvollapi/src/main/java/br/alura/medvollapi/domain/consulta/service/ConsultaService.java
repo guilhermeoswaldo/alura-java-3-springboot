@@ -1,18 +1,18 @@
 package br.alura.medvollapi.domain.consulta.service;
 
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-import br.alura.medvollapi.domain.consulta.dto.DadosDetalhamentoConsulta;
-import br.alura.medvollapi.domain.consulta.validacoes.ValidadorAgendamentoConsulta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.alura.medvollapi.domain.consulta.dto.DadosAgendamentoConsulta;
 import br.alura.medvollapi.domain.consulta.dto.DadosCancelamentoConsulta;
+import br.alura.medvollapi.domain.consulta.dto.DadosDetalhamentoConsulta;
 import br.alura.medvollapi.domain.consulta.entity.Consulta;
 import br.alura.medvollapi.domain.consulta.repository.ConsultaRepository;
+import br.alura.medvollapi.domain.consulta.validacoes.agendamento.ValidadorAgendamentoConsulta;
+import br.alura.medvollapi.domain.consulta.validacoes.cancelamento.ValidadorCancelamentoConsulta;
 import br.alura.medvollapi.domain.medico.entity.Medico;
 import br.alura.medvollapi.domain.medico.repository.MedicoRepository;
 import br.alura.medvollapi.domain.paciente.repository.PacienteRepository;
@@ -34,7 +34,10 @@ public class ConsultaService {
     private PacienteRepository pacienteRepository;
 
     @Autowired
-    private List<ValidadorAgendamentoConsulta> validadores; // Identifica todas as listas que implementam a interface e injeta cada uma delas
+    private List<ValidadorAgendamentoConsulta> validadoresAgendamento; // Identifica todas as listas que implementam a interface e injeta cada uma delas
+
+    @Autowired
+    private List<ValidadorCancelamentoConsulta> validadoresCancelamento;
 
     public DadosDetalhamentoConsulta agendar(DadosAgendamentoConsulta dados) {
         // Validação de integridade de dados
@@ -44,7 +47,7 @@ public class ConsultaService {
         // S -> Single Responsibility Principle (cada classe de validação tem apenas uma responsabilidade)
         // O -> Open-Closed Principle (a service está aberta para novos validadores sem precisar alterar seu código)
         // D -> Dependency Inversion Principle (a service depende de uma abstração/interface e não de implementações concretas)
-        validadores.forEach(v -> v.validar(dados));
+        this.validadoresAgendamento.forEach(v -> v.validar(dados));
 
         var medico = this.escolherMedico(dados);
         var paciente = this.pacienteRepository.getReferenceById(
@@ -57,8 +60,9 @@ public class ConsultaService {
 
     public void cancelar(@Valid DadosCancelamentoConsulta dados) {
         this.validarDadosCancelamento(dados);
+        this.validadoresCancelamento.forEach(v -> v.validar(dados));
+
         var consulta = this.consultaRepository.getReferenceById(dados.idConsulta());
-        this.validarCancelamento(consulta);
         consulta.cancelar(dados.motivo());
     }
 
@@ -81,7 +85,8 @@ public class ConsultaService {
             return this.medicoRepository.getReferenceById(dados.idMedico());
         }
 
-        var medicoEscolhido = this.medicoRepository.buscarMedicoAleatorioDisponivelNaData(dados.especialidade(), dados.data());
+        var medicoEscolhido =
+                this.medicoRepository.buscarMedicoAleatorioDisponivelNaData(dados.especialidade(), dados.data());
         if (medicoEscolhido == null) {
             throw new ValidacaoException("Não existe médico disponível nessa data");
         }
@@ -95,9 +100,4 @@ public class ConsultaService {
         }
     }
 
-    private void validarCancelamento(Consulta consulta) {
-        if (LocalDateTime.now().isAfter(consulta.getData().minusHours(24L))) {
-            throw new ValidacaoException("Uma consulta só pode ser cancelada com antecedência mínima de 24 horas");
-        }
-    }
 }
