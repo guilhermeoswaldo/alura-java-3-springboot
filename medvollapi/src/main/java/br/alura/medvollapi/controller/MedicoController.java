@@ -24,6 +24,7 @@ import br.alura.medvollapi.domain.medico.dto.DadosDetalhamentoMedico;
 import br.alura.medvollapi.domain.medico.dto.DadosListagemMedico;
 import br.alura.medvollapi.domain.medico.entity.Medico;
 import br.alura.medvollapi.domain.medico.repository.MedicoRepository;
+import br.alura.medvollapi.domain.usuario.entity.PerfilPermissao;
 
 import jakarta.validation.Valid;
 
@@ -53,7 +54,7 @@ public class MedicoController {
     }
 
     @GetMapping("/{id}")
-    @Secured("ROLE_ADMIN") // Permite acesso apenas quem tiver a role ADMIN // TODO: Configurar e testar o acesso do endpoint apenas para alguns usuários
+    @Secured(PerfilPermissao.ADMIN) // Permite acesso apenas quem tiver a role ADMIN
     public ResponseEntity<DadosDetalhamentoMedico> recuperar(@PathVariable Long id) {
         var medico = this.medicoRepository.getReferenceById(id);
         return ResponseEntity.ok(new DadosDetalhamentoMedico(medico));
