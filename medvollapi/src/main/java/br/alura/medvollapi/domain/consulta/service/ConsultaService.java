@@ -4,6 +4,7 @@ package br.alura.medvollapi.domain.consulta.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import br.alura.medvollapi.domain.consulta.dto.DadosDetalhamentoConsulta;
 import br.alura.medvollapi.domain.consulta.validacoes.ValidadorAgendamentoConsulta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class ConsultaService {
     @Autowired
     private List<ValidadorAgendamentoConsulta> validadores; // Identifica todas as listas que implementam a interface e injeta cada uma delas
 
-    public void agendar(DadosAgendamentoConsulta dados) {
+    public DadosDetalhamentoConsulta agendar(DadosAgendamentoConsulta dados) {
         // Validação de integridade de dados
         this.validarDadosConsulta(dados);
         // Validações de Regra de Negócio -> Design Pattern Strategy
@@ -50,6 +51,8 @@ public class ConsultaService {
                 dados.idPaciente()); // Usado para atribuir sem realizar alterações no objeto
         var consulta = new Consulta(medico, paciente, dados.data());
         this.consultaRepository.save(consulta);
+
+        return new DadosDetalhamentoConsulta(consulta);
     }
 
     public void cancelar(@Valid DadosCancelamentoConsulta dados) {
@@ -77,7 +80,13 @@ public class ConsultaService {
         if (dados.idMedico() != null) {
             return this.medicoRepository.getReferenceById(dados.idMedico());
         }
-        return this.medicoRepository.buscarMedicoAleatorioDisponivelNaData(dados.especialidade(), dados.data());
+
+        var medicoEscolhido = this.medicoRepository.buscarMedicoAleatorioDisponivelNaData(dados.especialidade(), dados.data());
+        if (medicoEscolhido == null) {
+            throw new ValidacaoException("Não existe médico disponível nessa data");
+        }
+
+        return medicoEscolhido;
     }
 
     private void validarDadosCancelamento(DadosCancelamentoConsulta dados) {

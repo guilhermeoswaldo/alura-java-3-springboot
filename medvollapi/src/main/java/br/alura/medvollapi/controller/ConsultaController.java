@@ -29,8 +29,8 @@ public class ConsultaController {
     @Transactional
     public ResponseEntity<DadosDetalhamentoConsulta> agendar(@RequestBody @Valid DadosAgendamentoConsulta dados)
             throws ValidacaoException {
-        this.consultaService.agendar(dados);
-        return ResponseEntity.ok(new DadosDetalhamentoConsulta(null, null, null, null));
+        var dto = this.consultaService.agendar(dados);
+        return ResponseEntity.ok(dto);
     }
 
     @PostMapping("/cancelar")

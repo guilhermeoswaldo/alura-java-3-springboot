@@ -31,6 +31,11 @@ public class GerenciadorDeErros {
         return ResponseEntity.badRequest().body(erros.stream().map(DadosErroValidacao::new).toList());
     }
 
+    @ExceptionHandler(ValidacaoException.class)
+    public ResponseEntity<String> tratarErroValidacaoRegraDeNegocio(ValidacaoException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<String> tratarErroJsonMalformado(HttpMessageNotReadableException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());
