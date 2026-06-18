@@ -15,6 +15,7 @@ import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabas
 import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 
+import br.alura.medvollapi.domain.consulta.MotivoCancelamento;
 import br.alura.medvollapi.domain.consulta.entity.Consulta;
 import br.alura.medvollapi.domain.endereco.dto.DadosEndereco;
 import br.alura.medvollapi.domain.medico.EspecialidadeMedico;
@@ -67,8 +68,58 @@ class MedicoRepositoryTest {
         assertThat(medicoLivre).isEqualTo(medico);
     }
 
-    private void cadastrarConsulta(Medico medico, Paciente paciente, LocalDateTime data) {
-        this.em.persist(new Consulta(medico, paciente, data));
+    @Test
+    @DisplayName("Deveria devolver null quando nao existir medico disponivel da especialidade informada")
+    void buscarMedicoAleatorioDisponivelNaDataCenario3() {
+        // given
+        var proximaSegundaAs10 = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(10, 0);
+        this.cadastrarMedico("Medico", "medico@voll.med", "123456", EspecialidadeMedico.CARDIOLOGIA);
+
+        // when
+        var medicoLivre = medicoRepository.buscarMedicoAleatorioDisponivelNaData(EspecialidadeMedico.ORTOPEDIA, proximaSegundaAs10);
+
+        // then
+        assertThat(medicoLivre).isNull();
+    }
+
+    @Test
+    @DisplayName("Deveria devolver null quando o medico estiver inativo")
+    void buscarMedicoAleatorioDisponivelNaDataCenario4() {
+        // given
+        var proximaSegundaAs10 = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(10, 0);
+        var medico = this.cadastrarMedico("Medico", "medico@voll.med", "123456", EspecialidadeMedico.CARDIOLOGIA);
+        medico.excluir();
+        this.em.flush();
+
+        // when
+        var medicoLivre = medicoRepository.buscarMedicoAleatorioDisponivelNaData(EspecialidadeMedico.CARDIOLOGIA, proximaSegundaAs10);
+
+        // then
+        assertThat(medicoLivre).isNull();
+    }
+
+    @Test
+    @DisplayName("Deveria devolver medico quando consulta no horario estiver cancelada")
+    void buscarMedicoAleatorioDisponivelNaDataCenario5() {
+        // given
+        var proximaSegundaAs10 = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(10, 0);
+        var medico = this.cadastrarMedico("Medico", "medico@voll.med", "123456", EspecialidadeMedico.CARDIOLOGIA);
+        var paciente = this.cadastrarPaciente("Paciente", "paciente@email.com", "00000000000");
+        var consulta = this.cadastrarConsulta(medico, paciente, proximaSegundaAs10);
+        consulta.cancelar(MotivoCancelamento.PACIENTE_DESISTIU);
+        this.em.flush();
+
+        // when
+        var medicoLivre = medicoRepository.buscarMedicoAleatorioDisponivelNaData(EspecialidadeMedico.CARDIOLOGIA, proximaSegundaAs10);
+
+        // then
+        assertThat(medicoLivre).isEqualTo(medico);
+    }
+
+    private Consulta cadastrarConsulta(Medico medico, Paciente paciente, LocalDateTime data) {
+        var consulta = new Consulta(medico, paciente, data);
+        this.em.persist(consulta);
+        return consulta;
     }
 
     private Medico cadastrarMedico(String nome, String email, String crm, EspecialidadeMedico especialidade) {

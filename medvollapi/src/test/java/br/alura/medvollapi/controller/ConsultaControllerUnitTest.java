@@ -42,8 +42,8 @@ class ConsultaControllerUnitTest {
     private ConsultaService consultaService;
 
     @Test
-    @WithMockUser // Simula um usuário logado
-    @DisplayName("Deveria devolver código HTTO 400 quando informações estão inválidas")
+    @WithMockUser // Simula um usuario logado
+    @DisplayName("Deveria devolver código HTTP 400 quando informações estão inválidas")
     void agendarCenario1() throws Exception {
         var response = mockMvc.perform(post("/consultas"))
                 .andReturn().getResponse();
@@ -52,7 +52,7 @@ class ConsultaControllerUnitTest {
 
     @Test
     @WithMockUser
-    @DisplayName("Deveria devolver código HTTO 200 quando informações estão válidas")
+    @DisplayName("Deveria devolver código HTTP 201 quando informações estão válidas")
     void agendarCenario2() throws Exception {
         var data = LocalDateTime.now().plusHours(1L);
         var especialidade = EspecialidadeMedico.CARDIOLOGIA;
@@ -69,5 +69,22 @@ class ConsultaControllerUnitTest {
                 dadosDetalhamento).getJson();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(response.getContentAsString()).isEqualTo(jsonEsperado);
+    }
+
+    @Test
+    @WithMockUser
+    @DisplayName("Deveria devolver codigo HTTP 204 quando cancelamento estiver valido")
+    void cancelarCenario1() throws Exception {
+        var response = mockMvc.perform(post("/consultas/cancelar")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "idConsulta": 1,
+                                  "motivo": "PACIENTE_DESISTIU"
+                                }
+                                """))
+                .andReturn().getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 }
