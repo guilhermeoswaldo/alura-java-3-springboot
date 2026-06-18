@@ -3,7 +3,6 @@ package br.alura.medvollapi.infra.security;
 
 import java.util.List;
 
-import br.alura.medvollapi.infra.security.filter.TokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +21,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import br.alura.medvollapi.infra.security.filter.TokenFilter;
 
 
 @Configuration
@@ -42,6 +43,7 @@ public class SecurityConfiguration {
                     authorizeRequests.requestMatchers(HttpMethod.POST, "/login").permitAll();
                     authorizeRequests.requestMatchers(HttpMethod.DELETE, "/medicos").hasRole("ADMIN"); // TODO: Permitir o acesso de determinados endpoints apenas para determinadas roles
                     authorizeRequests.requestMatchers(HttpMethod.DELETE, "/pacientes").hasRole("ADMIN");
+                    authorizeRequests.requestMatchers("/v3/api-docs/**", "/v3/api-docs.yaml", "/swagger-ui/**", "/swagger-ui.html").permitAll();
                     authorizeRequests.anyRequest().authenticated();
                 }).addFilterBefore(this.tokenFilter, UsernamePasswordAuthenticationFilter.class) // Ordem de configuracão dos filtros afeta o funcionamento pois a verificacao do token deve vir antes da autenticacao do Spring
                 .build();

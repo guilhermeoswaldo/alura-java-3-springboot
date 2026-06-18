@@ -25,12 +25,14 @@ import br.alura.medvollapi.domain.medico.dto.DadosListagemMedico;
 import br.alura.medvollapi.domain.medico.entity.Medico;
 import br.alura.medvollapi.domain.medico.repository.MedicoRepository;
 import br.alura.medvollapi.domain.usuario.entity.PerfilPermissao;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import jakarta.validation.Valid;
 
 
 @RestController
 @RequestMapping("medicos")
+@SecurityRequirement(name = "bearer-key")
 public class MedicoController {
 
     @Autowired

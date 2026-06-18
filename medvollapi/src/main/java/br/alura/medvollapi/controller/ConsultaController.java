@@ -12,6 +12,7 @@ import br.alura.medvollapi.domain.consulta.dto.DadosAgendamentoConsulta;
 import br.alura.medvollapi.domain.consulta.dto.DadosCancelamentoConsulta;
 import br.alura.medvollapi.domain.consulta.dto.DadosDetalhamentoConsulta;
 import br.alura.medvollapi.domain.consulta.service.ConsultaService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -19,6 +20,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("consultas")
+@SecurityRequirement(name = "bearer-key") // String igual a da classe de configuração do SpringDoc
 public class ConsultaController {
 
     @Autowired

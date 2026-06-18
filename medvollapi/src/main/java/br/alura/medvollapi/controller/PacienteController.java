@@ -23,12 +23,14 @@ import br.alura.medvollapi.domain.paciente.dto.DadosDetalhamentoPaciente;
 import br.alura.medvollapi.domain.paciente.dto.DadosListagemPaciente;
 import br.alura.medvollapi.domain.paciente.entity.Paciente;
 import br.alura.medvollapi.domain.paciente.repository.PacienteRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import jakarta.validation.Valid;
 
 
 @RestController
 @RequestMapping("pacientes")
+@SecurityRequirement(name = "bearer-key")
 public class PacienteController {
 
     @Autowired
