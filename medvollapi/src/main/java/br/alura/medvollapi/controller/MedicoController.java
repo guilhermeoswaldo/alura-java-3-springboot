@@ -72,6 +72,7 @@ public class MedicoController {
     }
 
     @DeleteMapping("/{id}")
+    @Secured(PerfilPermissao.ADMIN)
     @Transactional
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         var medico = this.medicoRepository.getReferenceById(id);
