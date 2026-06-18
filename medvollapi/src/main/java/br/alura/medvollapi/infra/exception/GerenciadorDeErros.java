@@ -38,7 +38,7 @@ public class GerenciadorDeErros {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<String> tratarErroJsonMalformado(HttpMessageNotReadableException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
+        return ResponseEntity.badRequest().body("JSON inválido ou campo com formato incorreto");
     }
 
     @ExceptionHandler(BadCredentialsException.class)
@@ -58,7 +58,7 @@ public class GerenciadorDeErros {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> tratarErroInternosGerais(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro: " + ex.getLocalizedMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno inesperado");
     }
 
     public record DadosErroValidacao(String campo, String mensagem) {

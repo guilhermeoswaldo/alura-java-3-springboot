@@ -2,6 +2,7 @@ package br.alura.medvollapi.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +13,7 @@ import br.alura.medvollapi.domain.consulta.dto.DadosAgendamentoConsulta;
 import br.alura.medvollapi.domain.consulta.dto.DadosCancelamentoConsulta;
 import br.alura.medvollapi.domain.consulta.dto.DadosDetalhamentoConsulta;
 import br.alura.medvollapi.domain.consulta.service.ConsultaService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -19,6 +21,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("consultas")
+@SecurityRequirement(name = "bearer-key") // String igual a da classe de configuração do SpringDoc
 public class ConsultaController {
 
     @Autowired
@@ -28,7 +31,7 @@ public class ConsultaController {
     @Transactional
     public ResponseEntity<DadosDetalhamentoConsulta> agendar(@RequestBody @Valid DadosAgendamentoConsulta dados) {
         var dto = this.consultaService.agendar(dados);
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
     @PostMapping("/cancelar")
