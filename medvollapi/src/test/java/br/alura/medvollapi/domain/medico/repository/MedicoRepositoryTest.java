@@ -26,10 +26,8 @@ import br.alura.medvollapi.domain.paciente.entity.Paciente;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-// Usa o banco de dados MySQL real porém utilizando outro database configurado no application-test.properties
-@ActiveProfiles("test")
 // Usa H2 em memoria com compatibilidade MySQL para executar as migrations.
-//@ActiveProfiles("h2")
+@ActiveProfiles("h2")
 class MedicoRepositoryTest {
 
     @Autowired
